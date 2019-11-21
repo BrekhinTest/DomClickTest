@@ -4,3 +4,5 @@
  
 Протестировать API можно через swagger-ui  http://localhost:8080/swagger-ui.html
 
+Примеры вызова из Postman находятся в PostmanCollection.postman_collection.json 
+
