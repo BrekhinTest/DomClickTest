@@ -1,10 +1,8 @@
 package ru.domclick.test.domclick.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.domclick.test.domclick.entity.Account;
+import ru.domclick.test.domclick.entity.AccountEntity;
 import ru.domclick.test.domclick.exception.AccountBadRequestException;
 import ru.domclick.test.domclick.exception.AccountNotFoundException;
 import ru.domclick.test.domclick.repository.AccountRepository;
@@ -33,9 +31,9 @@ public class AccountServiceImpl implements AccountService {
             throw new AccountBadRequestException("value cannot be negative");
         }
 
-        Account accountFrom = accountRepository.findById(transferMoneyRequest.getFromAccount()).orElseThrow(() ->
+        AccountEntity accountFrom = accountRepository.findById(transferMoneyRequest.getFromAccount()).orElseThrow(() ->
                 new AccountNotFoundException(String.format("account with id=%s not found", transferMoneyRequest.getFromAccount())));
-        Account accountTo = accountRepository.findById(transferMoneyRequest.getToAccount()).orElseThrow(() ->
+        AccountEntity accountTo = accountRepository.findById(transferMoneyRequest.getToAccount()).orElseThrow(() ->
                 new AccountNotFoundException(String.format("account with id=%s not found", transferMoneyRequest.getFromAccount())));
 
         if (accountFrom.getBalance() < transferMoneyRequest.getSum()) {
@@ -54,7 +52,7 @@ public class AccountServiceImpl implements AccountService {
         if (putMoneyRequest.getSum() < 0) {
             throw new AccountBadRequestException("value cannot be negative");
         }
-        Account account = accountRepository.findById(putMoneyRequest.getAccountId()).orElseThrow(() ->
+        AccountEntity account = accountRepository.findById(putMoneyRequest.getAccountId()).orElseThrow(() ->
                 new AccountNotFoundException(String.format("account with id=%s not found", putMoneyRequest.getAccountId())));
         Long tempBalance = account.getBalance();
         account.setBalance(tempBalance + putMoneyRequest.getSum());
@@ -66,7 +64,7 @@ public class AccountServiceImpl implements AccountService {
         if (getMoneyRequest.getSum() < 0) {
             throw new AccountBadRequestException("value cannot be negative");
         }
-        Account account = accountRepository.findById(getMoneyRequest.getAccountId()).orElseThrow(() ->
+        AccountEntity account = accountRepository.findById(getMoneyRequest.getAccountId()).orElseThrow(() ->
                 new AccountNotFoundException(String.format("account with id=%s not found", getMoneyRequest.getAccountId())));
         Long tempBalance = account.getBalance();
         if (tempBalance < getMoneyRequest.getSum()) {
